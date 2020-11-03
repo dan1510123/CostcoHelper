@@ -22,18 +22,18 @@
                                     <constraint firstAttribute="height" constant="400" id="Fqs-UG-v3C"/>
                                 </constraints>
                             </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gee-ZE-P2b">
-                                <rect key="frame" x="40" y="516" width="335" height="330"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gee-ZE-P2b">
+                                <rect key="frame" x="40" y="516" width="334" height="330"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="335" id="vaz-a0-sHS"/>
+                                    <constraint firstAttribute="width" constant="334" id="vaz-a0-sHS"/>
                                     <constraint firstAttribute="height" constant="330" id="wPM-OS-8Ul"/>
                                 </constraints>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="8jh-Ok-061">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="8jh-Ok-061">
                                 <rect key="frame" x="197" y="671" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="5oD-kK-8l0"/>
@@ -46,9 +46,11 @@
                         <constraints>
                             <constraint firstItem="8jh-Ok-061" firstAttribute="centerY" secondItem="Gee-ZE-P2b" secondAttribute="centerY" id="2qX-m5-MaJ"/>
                             <constraint firstItem="AmT-AU-1ta" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="EVF-Jo-U31"/>
+                            <constraint firstItem="Gee-ZE-P2b" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="40" id="I6l-eZ-YOi"/>
                             <constraint firstItem="Gee-ZE-P2b" firstAttribute="top" secondItem="AmT-AU-1ta" secondAttribute="bottom" constant="8" symbolic="YES" id="Idd-BD-MFT"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="AmT-AU-1ta" secondAttribute="trailing" constant="20" id="PWd-bu-VSc"/>
                             <constraint firstItem="AmT-AU-1ta" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Z0y-lB-Hza"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Gee-ZE-P2b" secondAttribute="trailing" constant="40" id="d2F-bJ-gXj"/>
                             <constraint firstItem="8jh-Ok-061" firstAttribute="centerX" secondItem="Gee-ZE-P2b" secondAttribute="centerX" id="vDb-wz-PpO"/>
                         </constraints>
                     </view>

@@ -35,11 +35,13 @@ class ViewController: UIViewController {
     private func setUpGallery() {
         
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            
             let imagePhotoLibraryPicker = UIImagePickerController()
             imagePhotoLibraryPicker.delegate = self
-            imagePhotoLibraryPicker.allowsEditing = true
+            imagePhotoLibraryPicker.allowsEditing = false
             imagePhotoLibraryPicker.sourceType = .photoLibrary
             self.present(imagePhotoLibraryPicker, animated: true, completion: nil)
+            
         }
     }
 }
