@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var request = VNRecognizeTextRequest(completionHandler: nil)
+    var textString = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,12 +49,34 @@ class ViewController: UIViewController {
         }
     }
     
-    private func cropSquare(image: UIImage?, sectionIndex: Int) -> UIImage? {
-        if (image == nil) {
-            return nil
+    private func findYOffset(image: UIImage?) -> Int {
+        guard let width = image?.cgImage?.width else { return 0 }
+        
+        let increment = 1.0/10.0
+        var height = Int(increment)
+        
+        while (height <= 1 && !self.textString.lowercased().contains("member")) {
+            
+            print(self.textString)
+            let cropZone = CGRect(x: 0, y: 0,
+                                  width: width, height: height)
+            guard let cutImageRef: CGImage = image?.cgImage?.cropping(to:cropZone)
+            else { return 0 }
+            
+            let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
+            sendRequest(image: croppedImage)
+            
+            height = Int(Double(height) + increment)
+            
         }
+        height = Int(Double(height) - increment)
+        
+        return height
+    }
+    
+    private func cropSquare(image: UIImage?, heightOffset: Int, sectionIndex: Int) -> UIImage? {
         guard let width = image?.cgImage?.width else { return nil }
-        let yIndex = Int(Float(width) * (4.0/7.0 + Float(sectionIndex)))
+        let yIndex = width * sectionIndex + heightOffset
 
         // Set cropzone to square starting at section index plus offset
         let cropZone = CGRect(x: 0, y: yIndex,
@@ -69,11 +92,18 @@ class ViewController: UIViewController {
     }
     
     private func setUpVisionTextRecognitionimage(image: UIImage?) {
-        // set up TextRecognition
-        var textString = ""
-        let firstImage = cropSquare(image: image, sectionIndex: 0)
+        let yOffset = findYOffset(image: image)
+        
+        let firstImage = cropSquare(image: image, heightOffset: yOffset, sectionIndex: 0)
         
         self.imageView.image = firstImage
+        
+        sendRequest(image: firstImage)
+    }
+    
+    private func sendRequest(image: UIImage?) {
+        // set up TextRecognition
+        var textString = ""
         
         request = VNRecognizeTextRequest(completionHandler: { (request, error) in
             guard let observations = request.results as? [VNRecognizedTextObservation] else {fatalError("Received Invalid Observation")}
@@ -88,6 +118,7 @@ class ViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.stopAnimating()
                     self.textView.text = textString
+                    self.textString = textString
                 }
             }
         })
@@ -105,12 +136,11 @@ class ViewController: UIViewController {
         // Creating request handler
         DispatchQueue.global(qos: .userInitiated).async {
             
-            guard let img = firstImage?.cgImage else {fatalError("Missing image to scan")}
+            guard let img = image?.cgImage else {fatalError("Missing image to scan")}
             let handle = VNImageRequestHandler(cgImage: img, options: [:])
             try? handle.perform(requests)
             
         }
-        
     }
 }
 
