@@ -48,11 +48,32 @@ class ViewController: UIViewController {
         }
     }
     
-    private func setUpVisionTextRecognitionimage(image: UIImage?) {
-        
-        // set up TextRecognition
+    private func cropSquare(image: UIImage?, sectionIndex: Int) -> UIImage? {
+        if (image == nil) {
+            return nil
+        }
+        guard let width = image?.cgImage?.width else { return nil }
+        let yIndex = Int(Float(width) * (4.0/7.0 + Float(sectionIndex)))
+
+        // Set cropzone to square starting at section index plus offset
+        let cropZone = CGRect(x: 0, y: yIndex,
+                              width: width, height: width)
+
+        // Perform cropping in Core Graphics
+        guard let cutImageRef: CGImage = image?.cgImage?.cropping(to:cropZone)
+        else { return nil }
+
+        // Return image to UIImage
+        let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
+        return croppedImage
+    }
     
+    private func setUpVisionTextRecognitionimage(image: UIImage?) {
+        // set up TextRecognition
         var textString = ""
+        let firstImage = cropSquare(image: image, sectionIndex: 0)
+        
+        self.imageView.image = firstImage
         
         request = VNRecognizeTextRequest(completionHandler: { (request, error) in
             guard let observations = request.results as? [VNRecognizedTextObservation] else {fatalError("Received Invalid Observation")}
@@ -84,7 +105,7 @@ class ViewController: UIViewController {
         // Creating request handler
         DispatchQueue.global(qos: .userInitiated).async {
             
-            guard let img = image?.cgImage else {fatalError("Missing image to scan")}
+            guard let img = firstImage?.cgImage else {fatalError("Missing image to scan")}
             let handle = VNImageRequestHandler(cgImage: img, options: [:])
             try? handle.perform(requests)
             
